@@ -81,7 +81,7 @@ public class SearchSpace {
 		{
 			for(int j=0; j < columns; j++)
 			{
-				 s = s + this.getSpace()[i][j].getStatus().toString() + "\t";
+				 s = s + this.getSpace()[i][j].getStatus().toString() + "\t\t";
 			}
 			s = s + "\n";
 		}

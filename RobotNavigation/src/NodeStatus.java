@@ -13,12 +13,12 @@ public enum NodeStatus {
 	  },	
 	  Restricted {
 	      public String toString() {
-	          return "Restricted Node";
+	          return "Restricted";
 	      }
 	  },
 	  Allowed {
 	      public String toString() {
-	          return "Allowed Node";
+	          return "Allowed";
 	      }
 	  }	 
 }
