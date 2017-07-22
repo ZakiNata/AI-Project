@@ -22,34 +22,34 @@ public class SearchSpace {
 		return space;
 	}
 	
-	public void generate(SearchSpace space)
+	public void generate()
 	{
 		int row,column;
 		
 
 		do{
-			row = (int)Math.random()*(space.getRows()-1);
-			column = (int)Math.random()*(space.getColumns()-1);
-		}while(!space.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
+			row = (int)(Math.random()*(this.getRows()-1));
+			column = (int)(Math.random()*(this.getColumns()-1));
+		}while(!this.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
 		
-		space.setNodestatus(space, row, column, NodeStatus.Start);
+		this.setNodestatus(this, row, column, NodeStatus.Start);
 		
 		do{
-			row = (int)Math.random()*(space.getRows()-1);
-			column = (int)Math.random()*(space.getColumns()-1);
-		}while(!space.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
+			row = (int)(Math.random()*(this.getRows()-1));
+			column = (int)(Math.random()*(this.getColumns()-1));
+		}while(!this.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
 		
-		space.setNodestatus(space, row, column, NodeStatus.Goal);
+		this.setNodestatus(this, row, column, NodeStatus.Goal);
 		
-		int restrictedNumber = (int)(space.getspaceSize()*0.3) ; 
+		int restrictedNumber = (int)(this.getspaceSize()*0.3) ; 
 		while(restrictedNumber != 0)
 		{
 			do{
-				row = (int)Math.random()*(space.getRows()-1);
-				column = (int)Math.random()*(space.getColumns()-1);
-			}while(!space.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
+				row = (int)(Math.random()*(this.getRows()-1));
+				column = (int)(Math.random()*(this.getColumns()-1));
+			}while(!this.getSpace()[row][column].getStatus().equals(NodeStatus.Allowed));
 			
-			space.setNodestatus(space, row, column, NodeStatus.Restricted);
+			this.setNodestatus(this, row, column, NodeStatus.Restricted);
 			
 			restrictedNumber--;
 		}
@@ -73,7 +73,21 @@ public class SearchSpace {
 		return columns;
 	}
 
-
+	public String toString()
+	{
+		String s = "";
+		
+		for(int i=0; i < rows; i++)
+		{
+			for(int j=0; j < columns; j++)
+			{
+				 s = s + this.getSpace()[i][j].getStatus().toString() + "\t";
+			}
+			s = s + "\n";
+		}
+		
+		return s;
+	}
 	
 	
 }
