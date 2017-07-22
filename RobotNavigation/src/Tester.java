@@ -6,5 +6,7 @@ public class Tester {
 		SearchSpace s = new SearchSpace(5,5);
 		s.generate();
 		System.out.println(s.toString());
+		
+		BFS.performBFS(s, null);
 	}
 }
