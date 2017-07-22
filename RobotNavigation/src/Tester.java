@@ -7,6 +7,7 @@ public class Tester {
 		s.generate();
 		System.out.println(s.toString());
 		
-		BFS.performBFS(s, null);
+		boolean solved = BFS.performBFS(s, null,100);
+		System.out.println(solved);
 	}
 }

@@ -2,21 +2,140 @@
 public class BFS {
 
 	private static NodeQueue[] queue;
-	//private Node[] fringe;
+	private static NodeQueue[] fringe;
 	
-	public static boolean performBFS(SearchSpace space,Node[] path)
+	public static boolean performBFS(SearchSpace space,Node[] path,int iterations)
 	{
 		insertStartNode(space);
-		return true;
+		fringe = new NodeQueue[space.getspaceSize()];
+		for(int i=0;i<iterations;i++)
+		{
+			fringe[i] = getNodeFromQueue(queue);
+			if(fringe[i]==null)
+				return false;
+			if(fringe[i].getNode().getStatus().equals(NodeStatus.Goal))
+			{
+				System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
+				//fill path
+				return true;
+			}
+			CalculateNext(space,fringe[i]);
+		}
+		return false;
 	}
 	
-	private static Node[] calculateNext(SearchSpace space)
-	{
-		Node[] next = null;
+	private static void CalculateNext(SearchSpace space, NodeQueue fringe) {
 		
-		return next;
+		int row = fringe.getRow();
+		int column = fringe.getColumn();
+		
+		if((row-1)>=0 && (column-1)>=0)
+		{
+			Node temp = space.getSpace()[row-1][column-1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column-1))
+			{
+				QueueAdd(temp,row-1,column-1);
+			}
+		}
+		
+		if((row-1)>=0)
+		{
+			Node temp = space.getSpace()[row-1][column];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column))
+			{
+				QueueAdd(temp,row-1,column);
+			}
+		}
+		
+		if((row-1)>=0 && (column+1)<(space.getColumns()))
+		{
+			Node temp = space.getSpace()[row-1][column+1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column+1))
+			{
+				QueueAdd(temp,row-1,column+1);
+			}
+		}
+		
+		if((column-1)>=0)
+		{
+			Node temp = space.getSpace()[row][column-1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column-1))
+			{
+				QueueAdd(temp,row,column-1);
+			}
+		}
+		
+		if((column+1)<(space.getColumns()))
+		{
+			Node temp = space.getSpace()[row][column+1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column+1))
+			{
+				QueueAdd(temp,row,column+1);
+			}
+		}
+		
+		if((row+1)<(space.getRows()) && (column-1)>=0)
+		{
+			Node temp = space.getSpace()[row+1][column-1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column-1))
+			{
+				QueueAdd(temp,row+1,column-1);
+			}
+		}
+		
+		if((row+1)<(space.getRows()))
+		{
+			Node temp = space.getSpace()[row+1][column];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column))
+			{
+				QueueAdd(temp,row+1,column);
+			}
+		}
+		
+		if((row+1)<(space.getRows()) && (column+1)<(space.getColumns()))
+		{
+			Node temp = space.getSpace()[row+1][column+1];
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column+1))
+			{
+				QueueAdd(temp,row+1,column+1);
+			}
+		}
 	}
+
+	private static void QueueAdd(Node temp, int row, int column) {
+		
+		for(int i=0; i<queue.length;i++)
+			if(queue[i]==null) 
+			{
+				queue[i]= new NodeQueue(temp,row,column,0);
+				return;
+			}
+	}
+
+	private static boolean FringeContains(int i, int j) {
 	
+		for(int z=0; z<fringe.length;z++)
+			if(fringe[z]!=null && fringe[z].getRow()==i && fringe[z].getColumn()==j)
+				return true;
+		return false;
+	}
+
+
+	private static NodeQueue getNodeFromQueue(NodeQueue[] queue) {
+		
+		if(queue[0]==null)
+			return null;
+		
+		NodeQueue temp = queue[0];
+		
+		for(int j=0;j<queue.length-1;j++)
+			queue[j]=queue[j+1];
+		
+		queue[queue.length-1]=null;
+		
+		return  temp;
+	}
+
 	private static void insertStartNode(SearchSpace space)
 	{
 		for(int i=0; i < space.getRows(); i++)
