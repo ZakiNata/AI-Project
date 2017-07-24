@@ -5,13 +5,15 @@ public class NodeQueue {
 	private int column;
 	private int price;
 	private Node Node;
+	private NodeQueue ParentNode;
 	
-	public NodeQueue(Node node,int row,int column,int price)
+	public NodeQueue(Node node,int row,int column,int price,NodeQueue parent)
 	{
 		this.Node = node;
 		this.row = row;
 		this.column = column;
 		this.price = price;
+		this.setParentNode(parent);
 	}
 	
 	public int getRow() {
@@ -37,6 +39,14 @@ public class NodeQueue {
 	}
 	public void setNode(Node node) {
 		Node = node;
+	}
+
+	public NodeQueue getParentNode() {
+		return ParentNode;
+	}
+
+	public void setParentNode(NodeQueue parent) {
+		ParentNode = parent;
 	}
 	
 	
