@@ -1,10 +1,10 @@
 
-public class BFS {
+public class DFS {
 
 	private static NodeQueue[] queue;
 	private static NodeQueue[] fringe;
 	
-	public static int performBFS(SearchSpace space,int[][] path,int iterations)
+	public static int performDFS(SearchSpace space,int[][] path,int iterations)
 	{
 		insertStartNode(space);
 		fringe = new NodeQueue[space.getspaceSize()];
@@ -145,12 +145,11 @@ public class BFS {
 		
 		if(!foundinQueue(row,column))
 		{
-			for(int i=0; i<queue.length;i++)
-				if(queue[i]==null) 
-				{
-					queue[i]= new NodeQueue(temp,row,column,0,parent);
-					return;
-				}
+			for(int i=queue.length-1; i>0;i--)
+			{
+				queue[i]=queue[i-1];
+			}
+			queue[0]= new NodeQueue(temp,row,column,0,parent);	
 		}
 	}
 
