@@ -4,24 +4,29 @@ public class BFS {
 	private static NodeQueue[] queue;
 	private static NodeQueue[] fringe;
 	
-	public static boolean performBFS(SearchSpace space,Node[] path,int iterations)
+	public static int performBFS(SearchSpace space,Node[] path,int iterations)
 	{
 		insertStartNode(space);
 		fringe = new NodeQueue[space.getspaceSize()];
+		
+		//review this later
+		if(iterations > space.getspaceSize())
+			iterations = space.getspaceSize();
+		
 		for(int i=0;i<iterations;i++)
 		{
 			fringe[i] = getNodeFromQueue(queue);
 			if(fringe[i]==null)
-				return false;
+				return -1;
 			if(fringe[i].getNode().getStatus().equals(NodeStatus.Goal))
 			{
 				System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
 				//fill path
-				return true;
+				return i;
 			}
 			CalculateNext(space,fringe[i]);
 		}
-		return false;
+		return -1;
 	}
 	
 	private static void CalculateNext(SearchSpace space, NodeQueue fringe) {
@@ -104,12 +109,26 @@ public class BFS {
 
 	private static void QueueAdd(Node temp, int row, int column) {
 		
+		if(!foundinQueue(row,column))
+		{
+			for(int i=0; i<queue.length;i++)
+				if(queue[i]==null) 
+				{
+					queue[i]= new NodeQueue(temp,row,column,0);
+					return;
+				}
+		}
+	}
+
+	private static boolean foundinQueue(int row, int column) {
 		for(int i=0; i<queue.length;i++)
+		{
 			if(queue[i]==null) 
-			{
-				queue[i]= new NodeQueue(temp,row,column,0);
-				return;
-			}
+				return false;
+			else if(queue[i].getRow()==row && queue[i].getColumn() == column)
+				return true;
+		}
+		return false;
 	}
 
 	private static boolean FringeContains(int i, int j) {
