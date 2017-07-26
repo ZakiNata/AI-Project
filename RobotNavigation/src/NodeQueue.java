@@ -3,11 +3,11 @@ public class NodeQueue {
 
 	private int row;
 	private int column;
-	private int price;
+	private double price;
 	private Node Node;
 	private NodeQueue ParentNode;
 	
-	public NodeQueue(Node node,int row,int column,int price,NodeQueue parent)
+	public NodeQueue(Node node,int row,int column,double price,NodeQueue parent)
 	{
 		this.Node = node;
 		this.row = row;
@@ -28,10 +28,10 @@ public class NodeQueue {
 	public void setColumn(int column) {
 		this.column = column;
 	}
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public Node getNode() {
