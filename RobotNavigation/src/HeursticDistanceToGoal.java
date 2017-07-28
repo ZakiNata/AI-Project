@@ -1,13 +1,16 @@
 
-public class AStar {
+public class HeursticDistanceToGoal {
 
 	private static NodeQueue[] queue;
 	private static NodeQueue[] fringe;
+	private static NodeQueue goal;
 	
-	public static int performAStar(SearchSpace space,int[][] path,int iterations)
+	public static int performHeursticDistanceToGoal(SearchSpace space,int[][] path,int iterations)
 	{
 		insertStartNode(space);
 		fringe = new NodeQueue[space.getspaceSize()];
+		
+		findGoalNode(space);
 		
 		//review this later
 		if(iterations > space.getspaceSize())
@@ -30,6 +33,17 @@ public class AStar {
 		return -1;
 	}
 	
+	private static void findGoalNode(SearchSpace space) {
+		// TODO Auto-generated method stub
+		for(int i=0; i < space.getRows(); i++)
+			for(int j=0; j < space.getColumns(); j++)
+				 if(space.getSpace()[i][j].getStatus().equals(NodeStatus.Goal))
+				 {
+					 goal = new NodeQueue(space.getSpace()[i][j],i,j,0,null);
+					 return;
+				 }
+	}
+
 	private static void calculatePath(int[][] path) {
 		// TODO Auto-generated method stub
 
@@ -67,80 +81,84 @@ public class AStar {
 		
 		int row = fringe.getRow();
 		int column = fringe.getColumn();
-		double horizontalPrice = 1+fringe.getPrice();
-		double diagonalPrice = 1.4+fringe.getPrice();
+		//double horizontalPrice = 1+fringe.getPrice();
+		//double diagonalPrice = 1.4+fringe.getPrice();
 		
 		if((row-1)>=0 && (column-1)>=0)
 		{
 			Node temp = space.getSpace()[row-1][column-1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column-1,diagonalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column-1,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column-1)))
 			{
-				QueueAdd(temp,row-1,column-1,fringe,diagonalPrice);
+				QueueAdd(temp,row-1,column-1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column-1));
 			}
 		}
 		
 		if((row-1)>=0)
 		{
 			Node temp = space.getSpace()[row-1][column];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column,horizontalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column)))
 			{
-				QueueAdd(temp,row-1,column,fringe,horizontalPrice);
+				QueueAdd(temp,row-1,column,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column));
 			}
 		}
 		
 		if((row-1)>=0 && (column+1)<(space.getColumns()))
 		{
 			Node temp = space.getSpace()[row-1][column+1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column+1,diagonalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row-1,column+1,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column+1)))
 			{
-				QueueAdd(temp,row-1,column+1,fringe,diagonalPrice);
+				QueueAdd(temp,row-1,column+1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row-1,column+1));
 			}
 		}
 		
 		if((column-1)>=0)
 		{
 			Node temp = space.getSpace()[row][column-1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column-1,horizontalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column-1,fringe.getPrice()+calculateDistanceFrom(goal,row,column-1)))
 			{
-				QueueAdd(temp,row,column-1,fringe,horizontalPrice);
+				QueueAdd(temp,row,column-1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row,column-1));
 			}
 		}
 		
 		if((column+1)<(space.getColumns()))
 		{
 			Node temp = space.getSpace()[row][column+1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column+1,horizontalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row,column+1,fringe.getPrice()+calculateDistanceFrom(goal,row,column+1)))
 			{
-				QueueAdd(temp,row,column+1,fringe,horizontalPrice);
+				QueueAdd(temp,row,column+1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row,column+1));
 			}
 		}
 		
 		if((row+1)<(space.getRows()) && (column-1)>=0)
 		{
 			Node temp = space.getSpace()[row+1][column-1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column-1,diagonalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column-1,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column-1)))
 			{
-				QueueAdd(temp,row+1,column-1,fringe,diagonalPrice);
+				QueueAdd(temp,row+1,column-1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column-1));
 			}
 		}
 		
 		if((row+1)<(space.getRows()))
 		{
 			Node temp = space.getSpace()[row+1][column];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column,horizontalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column)))
 			{
-				QueueAdd(temp,row+1,column,fringe,horizontalPrice);
+				QueueAdd(temp,row+1,column,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column));
 			}
 		}
 		
 		if((row+1)<(space.getRows()) && (column+1)<(space.getColumns()))
 		{
 			Node temp = space.getSpace()[row+1][column+1];
-			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column+1,diagonalPrice))
+			if(!temp.getStatus().equals(NodeStatus.Restricted) && !FringeContains(row+1,column+1,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column+1)))
 			{
-				QueueAdd(temp,row+1,column+1,fringe,diagonalPrice);
+				QueueAdd(temp,row+1,column+1,fringe,fringe.getPrice()+calculateDistanceFrom(goal,row+1,column+1));
 			}
 		}
+	}
+
+	private static double calculateDistanceFrom(NodeQueue goal, int row, int col) {
+		return (Math.sqrt(Math.pow((goal.getRow()-row), 2) + Math.pow((goal.getColumn()-col), 2)));
 	}
 
 	private static void QueueAdd(Node temp, int row, int column,NodeQueue parent,double price) {
@@ -231,3 +249,4 @@ public class AStar {
 				 }
 	}
 }
+

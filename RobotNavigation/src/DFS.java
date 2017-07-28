@@ -23,7 +23,7 @@ public class DFS {
 				System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
 				//fill path
 				calculatePath(path);
-				return i;
+				return (i+1);
 			}
 			CalculateNext(space,fringe[i]);
 		}
