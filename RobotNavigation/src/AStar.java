@@ -18,9 +18,16 @@ public class AStar {
 			fringe[i] = getNodeFromQueue(queue);
 			if(fringe[i]==null)
 				return -1;
+//			
+//			//debug
+//			if(fringe[i].getRow()==6 && fringe[i].getColumn()==3)
+//			{
+//				System.out.print("");
+//			}
+			
 			if(fringe[i].getNode().getStatus().equals(NodeStatus.Goal))
 			{
-				System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
+				//System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
 				//fill path
 				calculatePath(path);
 				return (i+1);
@@ -177,7 +184,7 @@ public class AStar {
 		{
 			if(queue[i]==null) 
 				return -1;
-			else if(queue[i].getRow()==row && queue[i].getColumn() == column && queue[i].getPrice() > price)
+			else if(queue[i].getRow()==row && queue[i].getColumn() == column && queue[i].getPrice() > (price+0.001))
 				return i;
 		}
 		return -1;
@@ -197,7 +204,7 @@ public class AStar {
 	private static boolean FringeContains(int i, int j, double price) {
 	
 		for(int z=0; z<fringe.length;z++)
-			if(fringe[z]!=null && fringe[z].getRow()==i && fringe[z].getColumn()==j && fringe[z].getPrice() < price)
+			if(fringe[z]!=null && fringe[z].getRow()==i && fringe[z].getColumn()==j)// && fringe[z].getPrice() > price)
 				return true;
 		return false;
 	}

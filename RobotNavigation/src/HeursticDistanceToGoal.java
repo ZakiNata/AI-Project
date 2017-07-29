@@ -23,7 +23,7 @@ public class HeursticDistanceToGoal {
 				return -1;
 			if(fringe[i].getNode().getStatus().equals(NodeStatus.Goal))
 			{
-				System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
+				//System.out.println(fringe[i].getRow()+" "+fringe[i].getColumn());
 				//fill path
 				calculatePath(path);
 				return (i+1);
